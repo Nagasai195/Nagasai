@@ -43,12 +43,26 @@
             align-items: center;
         }
 
-        /* --- 3. Images --- */
+        /* --- 3. THE STICKER (Emoji Styled as Image) --- */
         .sticker {
-            width: 120px;
-            height: auto;
-            margin-bottom: 15px;
-            filter: drop-shadow(0 4px 4px rgba(0,0,0,0.1));
+            font-size: 100px; /* Big Size */
+            cursor: default;
+            margin-bottom: 10px;
+            /* This creates the "Sticker" look with white outline & shadow */
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
+            text-shadow: 
+                0 0 0 rgba(0,0,0,0), /* Fix for some browsers */
+                -1px -1px 0 #fff, 
+                1px -1px 0 #fff, 
+                -1px 1px 0 #fff, 
+                1px 1px 0 #fff, 
+                0px 3px 3px rgba(0,0,0,0.1);
+            animation: bounce 2s infinite ease-in-out;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
         }
 
         /* --- 4. Text --- */
@@ -127,12 +141,13 @@
 
     <audio id="music" loop>
         <source src="music.mp3" type="audio/mpeg">
+        <source src="https://upload.wikimedia.org/wikipedia/commons/2/22/Claude_Debussy_-_Clair_de_lune_-_Laurens_Goedhart.mp3" type="audio/mpeg">
     </audio>
 
     <div class="container">
         
         <div id="page1">
-            <img src="bear-ask.png" class="sticker" alt="Bear Asking">
+            <div class="sticker">🧸</div>
             
             <h1>Divya, will you be my Valentine?</h1>
             <p>I have something special to ask you... ❤️</p>
@@ -144,7 +159,7 @@
         </div>
 
         <div id="page2" class="hidden">
-            <img src="bear-kiss.png" class="sticker" alt="Bear Kissing">
+            <div class="sticker">💑</div>
             
             <h1>Yay! I'm so happy!</h1>
             <p>
@@ -194,34 +209,3 @@
             el.classList.add('floater');
             if(type === 'up') {
                 el.classList.add('up');
-                el.innerText = Math.random() > 0.5 ? "❤️" : "💘";
-                el.style.left = Math.random() * 100 + "vw";
-                el.style.animationDuration = (Math.random() * 3 + 3) + "s";
-            } else {
-                el.classList.add('down');
-                el.innerText = "🥰";
-                el.style.left = Math.random() * 100 + "vw";
-                el.style.animationDuration = (Math.random() * 2 + 2) + "s";
-            }
-            document.body.appendChild(el);
-            setTimeout(() => el.remove(), 6000);
-        }
-
-        function startFloatingHearts() {
-            intervalId = setInterval(() => createHeart('up'), 400);
-        }
-
-        function startFallingLove() {
-            clearInterval(intervalId);
-            document.querySelectorAll('.up').forEach(el => el.remove());
-            setInterval(() => createHeart('down'), 200);
-        }
-
-        startFloatingHearts();
-        
-        document.body.addEventListener('click', () => {
-            if(audio.paused) audio.play().catch(e=>{});
-        }, { once: true });
-    </script>
-</body>
-</html>
