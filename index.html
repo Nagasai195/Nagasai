@@ -140,7 +140,7 @@
             z-index: 1; 
             animation: moveDown linear forwards;
             opacity: 0;
-            top: -10vh; /* Start above screen */
+            top: -10vh; 
         }
 
         @keyframes moveDown {
@@ -154,8 +154,7 @@
 <body>
 
     <audio id="bgMusic" loop>
-        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-10.mp3" type="audio/mpeg">
-        Your browser does not support the audio element.
+        <source src="music.mp3" type="audio/mpeg">
     </audio>
 
     <div class="container">
@@ -195,53 +194,35 @@
             floatInterval = setInterval(() => {
                 const floater = document.createElement('div');
                 floater.classList.add('float-up');
-                
-                // Only Heart and Arrow Heart
                 const emojis = ["❤️", "💘"]; 
                 floater.innerText = emojis[Math.floor(Math.random() * emojis.length)];
-                
                 floater.style.left = Math.random() * 100 + "vw";
-                floater.style.animationDuration = Math.random() * 3 + 4 + "s"; // 4-7s speed
+                floater.style.animationDuration = Math.random() * 3 + 4 + "s"; 
                 floater.style.fontSize = Math.random() * 20 + 20 + "px";
-                
                 document.body.appendChild(floater);
-                
                 setTimeout(() => floater.remove(), 7000);
             }, 400);
         }
 
-        // Start floating hearts immediately
         startFloatingHearts();
 
         // --- PAGE 2: Falling Faces Logic ---
         function startFallingLove() {
-            // Stop floating hearts
             clearInterval(floatInterval);
-
-            // Remove existing floaters to clean up screen
             document.querySelectorAll('.float-up').forEach(el => el.remove());
-
-            // Start falling hearts
             setInterval(() => {
                 const drop = document.createElement('div');
                 drop.classList.add('fall-down');
-                
-                // Only Smiling Face with Hearts
                 drop.innerText = "🥰"; 
-                
                 drop.style.left = Math.random() * 100 + "vw";
-                drop.style.animationDuration = Math.random() * 2 + 2 + "s"; // Faster fall
+                drop.style.animationDuration = Math.random() * 2 + 2 + "s"; 
                 drop.style.fontSize = Math.random() * 30 + 20 + "px";
-                
                 document.body.appendChild(drop);
-                
                 setTimeout(() => drop.remove(), 5000);
-            }, 150); // Fall frequently
+            }, 150);
         }
 
         // --- Interaction Logic ---
-
-        // 'No' Button Runs Away
         noBtn.addEventListener('mouseover', () => {
             const maxWidth = window.innerWidth - noBtn.offsetWidth;
             const maxHeight = window.innerHeight - noBtn.offsetHeight;
@@ -251,24 +232,18 @@
             noBtn.style.left = `${x}px`;
             noBtn.style.top = `${y}px`;
             
-            // Try to play music on interaction if it hasn't started
+            // Try to play music on mouseover
             if(audio.paused) { audio.play().catch(e => console.log("Audio waiting for click")); }
         });
 
-        // 'Yes' Button Click
         yesBtn.addEventListener('click', () => {
             askDiv.style.display = 'none'; 
             successDiv.style.display = 'block'; 
-            
-            // Start the falling animation
             startFallingLove();
-
-            // Play Music
-            audio.volume = 0.5; // Set volume to 50%
+            audio.volume = 0.6; 
             audio.play().catch(error => console.log("Music play failed:", error));
         });
 
-        // Try to play music on load (often blocked by browser, but worth a try)
         window.addEventListener('click', () => {
              if(audio.paused) { audio.play().catch(e => console.log("Audio waiting for interaction")); }
         }, { once: true });
