@@ -35,7 +35,7 @@
             width: 90%;
             transition: transform 0.3s ease;
             position: relative;
-            z-index: 10; /* Keep card above floating hearts */
+            z-index: 10; 
         }
 
         h1 {
@@ -52,7 +52,6 @@
             line-height: 1.5;
         }
 
-        /* --- Clean Button Styling --- */
         .buttons {
             display: flex;
             justify-content: center;
@@ -97,7 +96,6 @@
             margin-bottom: 10px;
         }
 
-        /* --- Success Message Section --- */
         .success-message {
             display: none;
             animation: fadeIn 1.5s ease;
@@ -116,38 +114,54 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* --- Flying Hearts Animation --- */
-        .heart {
+        /* --- Floating UP Animation (Page 1) --- */
+        .float-up {
             position: fixed;
-            color: #ff4d6d;
             font-size: 24px;
             user-select: none;
-            pointer-events: none; /* Let clicks pass through */
-            z-index: 1; /* Behind the card */
-            animation: floatUp 4s linear forwards;
+            pointer-events: none; 
+            z-index: 1; 
+            animation: moveUp linear forwards;
+            opacity: 0;
         }
 
-        @keyframes floatUp {
-            0% {
-                transform: translateY(100vh) scale(0.5);
-                opacity: 0;
-            }
-            10% {
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(-10vh) scale(1.5) rotate(20deg);
-                opacity: 0;
-            }
+        @keyframes moveUp {
+            0% { transform: translateY(100vh) scale(0.5); opacity: 0; }
+            10% { opacity: 0.8; }
+            100% { transform: translateY(-10vh) scale(1.2) rotate(20deg); opacity: 0; }
         }
+
+        /* --- Falling DOWN Animation (Page 2) --- */
+        .fall-down {
+            position: fixed;
+            font-size: 24px;
+            user-select: none;
+            pointer-events: none; 
+            z-index: 1; 
+            animation: moveDown linear forwards;
+            opacity: 0;
+            top: -10vh; /* Start above screen */
+        }
+
+        @keyframes moveDown {
+            0% { transform: translateY(0) scale(0.5) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            100% { transform: translateY(110vh) scale(1.2) rotate(180deg); opacity: 0; }
+        }
+
     </style>
 </head>
 <body>
 
+    <audio id="bgMusic" loop>
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-10.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
     <div class="container">
         
         <div id="ask">
-            <img src="https://media1.tenor.com/m/fA1qI7j8mYAAAAAC/cute-bear.gif" alt="Cute bear asking">
+            <img src="https://media1.tenor.com/m/fA1qI7j8mYAAAAAd/cute-bear.gif" alt="Cute bear asking">
             <h1>Will you be my Valentine?</h1>
             <p>I have something special to ask you... ❤️</p>
             <div class="buttons">
@@ -157,7 +171,7 @@
         </div>
 
         <div id="success" class="success-message">
-            <img src="https://media1.tenor.com/m/J49TjUe7yC8AAAAC/mocha-bear-hearts.gif" alt="Happy hug">
+            <img src="https://media1.tenor.com/m/J49TjUe7yC8AAAAd/mocha-bear-hearts.gif" alt="Happy hug">
             <h1>Yay! I'm so happy!</h1>
             <p>
                 "Divya, my heart found its home the moment I found you."
@@ -172,8 +186,62 @@
         const yesBtn = document.getElementById('yesBtn');
         const askDiv = document.getElementById('ask');
         const successDiv = document.getElementById('success');
+        const audio = document.getElementById('bgMusic');
+        
+        let floatInterval;
 
-        // Logic to make the 'No' button run away
+        // --- PAGE 1: Floating Hearts Logic ---
+        function startFloatingHearts() {
+            floatInterval = setInterval(() => {
+                const floater = document.createElement('div');
+                floater.classList.add('float-up');
+                
+                // Only Heart and Arrow Heart
+                const emojis = ["❤️", "💘"]; 
+                floater.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+                
+                floater.style.left = Math.random() * 100 + "vw";
+                floater.style.animationDuration = Math.random() * 3 + 4 + "s"; // 4-7s speed
+                floater.style.fontSize = Math.random() * 20 + 20 + "px";
+                
+                document.body.appendChild(floater);
+                
+                setTimeout(() => floater.remove(), 7000);
+            }, 400);
+        }
+
+        // Start floating hearts immediately
+        startFloatingHearts();
+
+        // --- PAGE 2: Falling Faces Logic ---
+        function startFallingLove() {
+            // Stop floating hearts
+            clearInterval(floatInterval);
+
+            // Remove existing floaters to clean up screen
+            document.querySelectorAll('.float-up').forEach(el => el.remove());
+
+            // Start falling hearts
+            setInterval(() => {
+                const drop = document.createElement('div');
+                drop.classList.add('fall-down');
+                
+                // Only Smiling Face with Hearts
+                drop.innerText = "🥰"; 
+                
+                drop.style.left = Math.random() * 100 + "vw";
+                drop.style.animationDuration = Math.random() * 2 + 2 + "s"; // Faster fall
+                drop.style.fontSize = Math.random() * 30 + 20 + "px";
+                
+                document.body.appendChild(drop);
+                
+                setTimeout(() => drop.remove(), 5000);
+            }, 150); // Fall frequently
+        }
+
+        // --- Interaction Logic ---
+
+        // 'No' Button Runs Away
         noBtn.addEventListener('mouseover', () => {
             const maxWidth = window.innerWidth - noBtn.offsetWidth;
             const maxHeight = window.innerHeight - noBtn.offsetHeight;
@@ -182,39 +250,29 @@
             noBtn.style.position = 'fixed';
             noBtn.style.left = `${x}px`;
             noBtn.style.top = `${y}px`;
+            
+            // Try to play music on interaction if it hasn't started
+            if(audio.paused) { audio.play().catch(e => console.log("Audio waiting for click")); }
         });
 
-        // Logic when 'Yes' is clicked
+        // 'Yes' Button Click
         yesBtn.addEventListener('click', () => {
             askDiv.style.display = 'none'; 
             successDiv.style.display = 'block'; 
             
-            // Start the flying hearts animation!
-            startFloatingHearts();
+            // Start the falling animation
+            startFallingLove();
+
+            // Play Music
+            audio.volume = 0.5; // Set volume to 50%
+            audio.play().catch(error => console.log("Music play failed:", error));
         });
 
-        // --- Flying Hearts Function ---
-        function startFloatingHearts() {
-            // Create a heart every 300 milliseconds
-            setInterval(createHeart, 300);
-        }
+        // Try to play music on load (often blocked by browser, but worth a try)
+        window.addEventListener('click', () => {
+             if(audio.paused) { audio.play().catch(e => console.log("Audio waiting for interaction")); }
+        }, { once: true });
 
-        function createHeart() {
-            const heart = document.createElement('div');
-            heart.classList.add('heart');
-            heart.innerHTML = '❤️'; // You can also use stickers like 💖, 💘, 💌
-            
-            // Randomize position and animation speed
-            heart.style.left = Math.random() * 100 + "vw";
-            heart.style.animationDuration = Math.random() * 2 + 3 + "s"; // between 3-5 seconds
-            
-            document.body.appendChild(heart);
-
-            // Remove the heart from the DOM after 5 seconds to keep the browser clean
-            setTimeout(() => {
-                heart.remove();
-            }, 5000);
-        }
     </script>
 
 </body>
