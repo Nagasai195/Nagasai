@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>For You</title>
+    <title>For Divya ❤️</title>
     <style>
         /* --- Theme Settings --- */
         :root {
-            --bg-color: #ffe6e9;       /* Soft Pink Background */
-            --card-color: #ffffff;     /* White Card */
-            --primary-color: #ff4d6d;  /* Love Red/Pink */
-            --hover-color: #ff2a55;    /* Darker Pink for Hover */
-            --text-color: #59303a;     /* Soft Brownish Text */
+            --bg-color: #ffe6e9;       
+            --card-color: #ffffff;     
+            --primary-color: #ff4d6d;  
+            --hover-color: #ff2a55;    
+            --text-color: #59303a;     
         }
 
         body {
@@ -22,18 +22,20 @@
             margin: 0;
             background-color: var(--bg-color);
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            overflow: hidden; /* Prevents scrollbars when button moves */
+            overflow: hidden; 
         }
 
         .container {
             background-color: var(--card-color);
             padding: 40px;
             border-radius: 25px;
-            box-shadow: 0 15px 35px rgba(255, 77, 109, 0.15); /* Soft glowing shadow */
+            box-shadow: 0 15px 35px rgba(255, 77, 109, 0.15);
             text-align: center;
             max-width: 400px;
             width: 90%;
             transition: transform 0.3s ease;
+            position: relative;
+            z-index: 10; /* Keep card above floating hearts */
         }
 
         h1 {
@@ -47,6 +49,7 @@
             color: var(--text-color);
             font-size: 1.1rem;
             margin-bottom: 30px;
+            line-height: 1.5;
         }
 
         /* --- Clean Button Styling --- */
@@ -54,7 +57,7 @@
             display: flex;
             justify-content: center;
             gap: 20px;
-            position: relative; /* Needed for the absolute positioning of 'No' */
+            position: relative; 
         }
 
         button {
@@ -62,7 +65,7 @@
             font-size: 1rem;
             font-weight: 600;
             border: none;
-            border-radius: 50px; /* Pill shape */
+            border-radius: 50px; 
             cursor: pointer;
             transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
@@ -80,7 +83,7 @@
         }
 
         #noBtn {
-            background-color: #f1f1f1; /* Clean light grey */
+            background-color: #f1f1f1; 
             color: #666;
         }
 
@@ -88,7 +91,6 @@
             background-color: #e0e0e0;
         }
 
-        /* --- Images --- */
         img {
             width: 160px;
             border-radius: 15px;
@@ -103,7 +105,7 @@
 
         .korean-text {
             display: block;
-            margin-top: 10px;
+            margin-top: 15px;
             font-size: 1.4rem;
             color: var(--primary-color);
             font-weight: bold;
@@ -113,6 +115,31 @@
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
+
+        /* --- Flying Hearts Animation --- */
+        .heart {
+            position: fixed;
+            color: #ff4d6d;
+            font-size: 24px;
+            user-select: none;
+            pointer-events: none; /* Let clicks pass through */
+            z-index: 1; /* Behind the card */
+            animation: floatUp 4s linear forwards;
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(100vh) scale(0.5);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-10vh) scale(1.5) rotate(20deg);
+                opacity: 0;
+            }
+        }
     </style>
 </head>
 <body>
@@ -120,11 +147,9 @@
     <div class="container">
         
         <div id="ask">
-            <img src="https://media.giphy.com/media/KzM1lAfJpx3o3Y2Rdg/giphy.gif" alt="Cute bear">
-            
+            <img src="https://media1.tenor.com/m/fA1qI7j8mYAAAAAC/cute-bear.gif" alt="Cute bear asking">
             <h1>Will you be my Valentine?</h1>
-            <p>I have something to ask you... ❤️</p>
-            
+            <p>I have something special to ask you... ❤️</p>
             <div class="buttons">
                 <button id="yesBtn">Yes</button>
                 <button id="noBtn">No</button>
@@ -132,11 +157,10 @@
         </div>
 
         <div id="success" class="success-message">
-            <img src="https://media.giphy.com/media/26BRv0ThflsHCqDrG/giphy.gif" alt="Happy hug">
-            
+            <img src="https://media1.tenor.com/m/J49TjUe7yC8AAAAC/mocha-bear-hearts.gif" alt="Happy hug">
             <h1>Yay! I'm so happy!</h1>
             <p>
-                "My heart found its home the moment I found you."
+                "Divya, my heart found its home the moment I found you."
                 <span class="korean-text">Saranghae (사랑해) ❤️</span>
             </p>
         </div>
@@ -151,15 +175,10 @@
 
         // Logic to make the 'No' button run away
         noBtn.addEventListener('mouseover', () => {
-            // Get window dimensions
             const maxWidth = window.innerWidth - noBtn.offsetWidth;
             const maxHeight = window.innerHeight - noBtn.offsetHeight;
-
-            // Generate random position
             const x = Math.random() * maxWidth;
             const y = Math.random() * maxHeight;
-            
-            // Apply new position (using fixed allows it to break out of the container)
             noBtn.style.position = 'fixed';
             noBtn.style.left = `${x}px`;
             noBtn.style.top = `${y}px`;
@@ -167,12 +186,35 @@
 
         // Logic when 'Yes' is clicked
         yesBtn.addEventListener('click', () => {
-            askDiv.style.display = 'none'; // Hide question
-            successDiv.style.display = 'block'; // Show success message
+            askDiv.style.display = 'none'; 
+            successDiv.style.display = 'block'; 
             
-            // Optional: Change background to a celebratory color
-            document.body.style.backgroundColor = '#ffe6e9'; 
+            // Start the flying hearts animation!
+            startFloatingHearts();
         });
+
+        // --- Flying Hearts Function ---
+        function startFloatingHearts() {
+            // Create a heart every 300 milliseconds
+            setInterval(createHeart, 300);
+        }
+
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.innerHTML = '❤️'; // You can also use stickers like 💖, 💘, 💌
+            
+            // Randomize position and animation speed
+            heart.style.left = Math.random() * 100 + "vw";
+            heart.style.animationDuration = Math.random() * 2 + 3 + "s"; // between 3-5 seconds
+            
+            document.body.appendChild(heart);
+
+            // Remove the heart from the DOM after 5 seconds to keep the browser clean
+            setTimeout(() => {
+                heart.remove();
+            }, 5000);
+        }
     </script>
 
 </body>
