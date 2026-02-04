@@ -3,93 +3,144 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Will You Be My Valentine?</title>
+    <title>For You</title>
     <style>
+        /* --- Theme Settings --- */
+        :root {
+            --bg-color: #ffe6e9;       /* Soft Pink Background */
+            --card-color: #ffffff;     /* White Card */
+            --primary-color: #ff4d6d;  /* Love Red/Pink */
+            --hover-color: #ff2a55;    /* Darker Pink for Hover */
+            --text-color: #59303a;     /* Soft Brownish Text */
+        }
+
         body {
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
             margin: 0;
-            background-color: #ffebee;
+            background-color: var(--bg-color);
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            overflow: hidden;
-            text-align: center;
+            overflow: hidden; /* Prevents scrollbars when button moves */
         }
 
         .container {
-            background-color: white;
-            padding: 3rem;
-            border-radius: 20px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            background-color: var(--card-color);
+            padding: 40px;
+            border-radius: 25px;
+            box-shadow: 0 15px 35px rgba(255, 77, 109, 0.15); /* Soft glowing shadow */
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
             transition: transform 0.3s ease;
         }
 
         h1 {
-            color: #d32f2f;
-            font-size: 2.5rem;
-            margin-bottom: 2rem;
+            color: var(--primary-color);
+            font-size: 2rem;
+            margin-bottom: 10px;
+            font-weight: 700;
         }
 
+        p {
+            color: var(--text-color);
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+        }
+
+        /* --- Clean Button Styling --- */
         .buttons {
             display: flex;
             justify-content: center;
             gap: 20px;
-            position: relative;
+            position: relative; /* Needed for the absolute positioning of 'No' */
         }
 
         button {
-            padding: 15px 35px;
-            font-size: 1.2rem;
+            padding: 12px 32px;
+            font-size: 1rem;
+            font-weight: 600;
             border: none;
-            border-radius: 50px;
+            border-radius: 50px; /* Pill shape */
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
 
         #yesBtn {
-            background-color: #4caf50;
+            background-color: var(--primary-color);
             color: white;
         }
 
         #yesBtn:hover {
-            background-color: #45a049;
-            transform: scale(1.1);
+            background-color: var(--hover-color);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(255, 77, 109, 0.4);
         }
 
         #noBtn {
-            background-color: #f44336;
-            color: white;
-            position: relative;
+            background-color: #f1f1f1; /* Clean light grey */
+            color: #666;
         }
 
+        #noBtn:hover {
+            background-color: #e0e0e0;
+        }
+
+        /* --- Images --- */
+        img {
+            width: 160px;
+            border-radius: 15px;
+            margin-bottom: 10px;
+        }
+
+        /* --- Success Message Section --- */
         .success-message {
             display: none;
-            color: #d32f2f;
+            animation: fadeIn 1.5s ease;
         }
 
-        img {
-            width: 150px;
-            margin-bottom: 1rem;
+        .korean-text {
+            display: block;
+            margin-top: 10px;
+            font-size: 1.4rem;
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
     </style>
 </head>
 <body>
 
-    <div class="container" id="mainContainer">
+    <div class="container">
+        
         <div id="ask">
-            <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHpueGZ3bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1z/KzM1lAfJpx3o3Y2Rdg/giphy.gif" alt="Cute bear">
-            <h1>Will you be my Valentine? ❤️</h1>
+            <img src="https://media.giphy.com/media/KzM1lAfJpx3o3Y2Rdg/giphy.gif" alt="Cute bear">
+            
+            <h1>Will you be my Valentine?</h1>
+            <p>I have something to ask you... ❤️</p>
+            
             <div class="buttons">
-                <button id="yesBtn">Yes!</button>
+                <button id="yesBtn">Yes</button>
                 <button id="noBtn">No</button>
             </div>
         </div>
 
         <div id="success" class="success-message">
-            <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHpueGZ3bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1z/v1.Y2lkPTc5MGI3NjExOHpueGZ3bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1z/5GoVLqeAOo6PK/giphy.gif" alt="Happy dance">
-            <h1>Yay! See you on the 14th! 🥰</h1>
+            <img src="https://media.giphy.com/media/26BRv0ThflsHCqDrG/giphy.gif" alt="Happy hug">
+            
+            <h1>Yay! I'm so happy!</h1>
+            <p>
+                "My heart found its home the moment I found you."
+                <span class="korean-text">Saranghae (사랑해) ❤️</span>
+            </p>
         </div>
+
     </div>
 
     <script>
@@ -98,22 +149,31 @@
         const askDiv = document.getElementById('ask');
         const successDiv = document.getElementById('success');
 
-        // The "Runaway" Logic
+        // Logic to make the 'No' button run away
         noBtn.addEventListener('mouseover', () => {
-            const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
-            const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
+            // Get window dimensions
+            const maxWidth = window.innerWidth - noBtn.offsetWidth;
+            const maxHeight = window.innerHeight - noBtn.offsetHeight;
+
+            // Generate random position
+            const x = Math.random() * maxWidth;
+            const y = Math.random() * maxHeight;
             
-            noBtn.style.position = 'absolute';
+            // Apply new position (using fixed allows it to break out of the container)
+            noBtn.style.position = 'fixed';
             noBtn.style.left = `${x}px`;
             noBtn.style.top = `${y}px`;
         });
 
-        // The Success Logic
+        // Logic when 'Yes' is clicked
         yesBtn.addEventListener('click', () => {
-            askDiv.style.display = 'none';
-            successDiv.style.display = 'block';
-            document.body.style.backgroundColor = '#ffcdd2';
+            askDiv.style.display = 'none'; // Hide question
+            successDiv.style.display = 'block'; // Show success message
+            
+            // Optional: Change background to a celebratory color
+            document.body.style.backgroundColor = '#ffe6e9'; 
         });
     </script>
+
 </body>
 </html>
