@@ -29,6 +29,7 @@
       text-align: center;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
       position: relative;
+      z-index: 1;
     }
 
     .teddy {
@@ -62,27 +63,21 @@
       border-radius: 25px;
       font-size: 14px;
       cursor: pointer;
-      transition: all 0.3s ease;
+      transition: all 0.2s ease;
     }
 
     #yesBtn {
       background: #ff4d6d;
       color: white;
       border: none;
-      position: absolute;
-      left: 0;
+      position: fixed;
+      z-index: 10;
     }
 
     #noBtn {
       background: white;
       color: #ff4d6d;
       border: 2px solid #ff4d6d;
-      position: absolute;
-      right: 0;
-    }
-
-    #yesBtn.disabled {
-      opacity: 0.9;
     }
   </style>
 </head>
@@ -96,42 +91,11 @@
     <p>I have something special to ask you... 💖</p>
 
     <div class="buttons">
-      <button id="yesBtn" class="disabled">Yes</button>
       <button id="noBtn">No</button>
     </div>
   </div>
 
+  <button id="yesBtn">Yes</button>
+
   <script>
-    const yesBtn = document.getElementById("yesBtn");
-
-    let clickCount = 0;
-
-    yesBtn.addEventListener("click", () => {
-      clickCount++;
-
-      if (clickCount < 4) {
-        moveYesButton();
-      } else {
-        alert("Yay! 💕 She said YES!");
-      }
-    });
-
-    function moveYesButton() {
-      const padding = 20;
-      const btnWidth = yesBtn.offsetWidth;
-      const btnHeight = yesBtn.offsetHeight;
-
-      const maxX = window.innerWidth - btnWidth - padding;
-      const maxY = window.innerHeight - btnHeight - padding;
-
-      const randomX = Math.floor(Math.random() * maxX);
-      const randomY = Math.floor(Math.random() * maxY);
-
-      yesBtn.style.position = "fixed";
-      yesBtn.style.left = randomX + "px";
-      yesBtn.style.top = randomY + "px";
-    }
-  </script>
-
-</body>
-</html>
+    const yesBtn = document.getElementById(
