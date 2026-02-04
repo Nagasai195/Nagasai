@@ -1,1 +1,188 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>For Divya ❤️</title>
+    <style>
+        /* --- 1. Theme Variables --- */
+        :root {
+            --bg-color: #ffe6e9;       /* Soft Pink */
+            --card-color: #ffffff;     /* White */
+            --primary-color: #ff4d6d;  /* Hot Pink */
+            --text-color: #59303a;     /* Chocolate Text */
+        }
+
+        /* --- 2. Base Layout --- */
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: var(--bg-color);
+            font-family: 'Segoe UI', sans-serif;
+            overflow: hidden; 
+            touch-action: manipulation; 
+        }
+
+        /* --- 3. The Card --- */
+        .container {
+            background: var(--card-color);
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(255, 77, 109, 0.15);
+            text-align: center;
+            width: 90%;
+            max-width: 350px;
+            z-index: 100;
+            position: relative;
+        }
+
+        /* --- 4. Typography & Images --- */
+        h1 {
+            color: var(--primary-color);
+            font-size: 1.8rem;
+            margin: 10px 0;
+        }
+
+        p {
+            color: var(--text-color);
+            font-size: 1rem;
+            margin-bottom: 25px;
+            line-height: 1.4;
+        }
+
+        /* Lightweight Static Images */
+        .sticker {
+            width: 140px;
+            height: auto;
+            margin-bottom: 10px;
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
+        }
+
+        .korean {
+            display: block;
+            margin-top: 10px;
+            color: var(--primary-color);
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        /* --- 5. Buttons --- */
+        .btn-group {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            position: relative; 
+        }
+
+        button {
+            padding: 12px 30px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: transform 0.2s;
+            font-weight: bold;
+        }
+
+        #yesBtn {
+            background-color: var(--primary-color);
+            color: white;
+            box-shadow: 0 4px 10px rgba(255, 77, 109, 0.3);
+        }
+
+        #noBtn {
+            background-color: #f0f0f0;
+            color: #555;
+        }
+
+        /* --- 6. Animations --- */
+        .heart-up {
+            position: fixed;
+            color: #ff4d6d;
+            font-size: 20px;
+            pointer-events: none;
+            animation: floatUp 6s linear forwards;
+            bottom: -50px; 
+            z-index: 1;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(0) scale(0.5); opacity: 0; }
+            10% { opacity: 0.8; }
+            100% { transform: translateY(-110vh) scale(1.2) rotate(20deg); opacity: 0; }
+        }
+
+        .love-down {
+            position: fixed;
+            font-size: 24px;
+            pointer-events: none;
+            animation: fallDown 4s linear forwards;
+            top: -50px; 
+            z-index: 1;
+        }
+
+        @keyframes fallDown {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+        }
+
+        .hidden { display: none; }
+        .fade-in { animation: fadeIn 1s ease; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <audio id="music" loop>
+        <source src="https://upload.wikimedia.org/wikipedia/commons/2/22/Claude_Debussy_-_Clair_de_lune_-_Laurens_Goedhart.mp3" type="audio/mpeg">
+    </audio>
+
+    <div class="container">
+        <div id="page1">
+            <img src="https://cdn-icons-png.flaticon.com/512/9308/9308873.png" class="sticker" alt="Bear Asking">
+            
+            <h1>Will you be my Valentine?</h1>
+            <p>I have something special to ask you... ❤️</p>
+            
+            <div class="btn-group">
+                <button id="yesBtn">Yes</button>
+                <button id="noBtn">No</button>
+            </div>
+        </div>
+
+        <div id="page2" class="hidden">
+            <img src="https://cdn-icons-png.flaticon.com/512/9308/9308882.png" class="sticker" alt="Bear Hugging">
+            
+            <h1>Yay! I'm so happy!</h1>
+            <p>
+                "Divya, my heart found its home the moment I found you."
+                <span class="korean">Saranghae (사랑해) ❤️</span>
+            </p>
+        </div>
+    </div>
+
+    <script>
+        const speed = 400; 
+        
+        const page1 = document.getElementById('page1');
+        const page2 = document.getElementById('page2');
+        const yesBtn = document.getElementById('yesBtn');
+        const noBtn = document.getElementById('noBtn');
+        const audio = document.getElementById('music');
+        let intervalId;
+
+        function startFloatingHearts() {
+            intervalId = setInterval(() => {
+                const heart = document.createElement('div');
+                heart.classList.add('heart-up');
+                heart.innerHTML = Math.random() > 0.5 ? "❤️" : "💘";
+                heart.style.left = Math.random()
