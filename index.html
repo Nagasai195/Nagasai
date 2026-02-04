@@ -39,12 +39,11 @@
             position: relative;
         }
 
-        /* --- 3. Sticker Styling (Using Emojis) --- */
+        /* --- 3. Sticker Styling --- */
         .sticker {
-            font-size: 100px; /* Big emoji size */
+            font-size: 100px; 
             display: block;
             margin: 0 auto 10px auto;
-            /* Drop shadow to make it look like a sticker */
             filter: drop-shadow(0 5px 5px rgba(0,0,0,0.1));
             animation: bounce 2s infinite ease-in-out;
         }
@@ -76,14 +75,12 @@
             font-size: 1.3rem;
         }
 
-        /* --- 5. Buttons (Fixed Logic) --- */
+        /* --- 5. Buttons (FIXED) --- */
         .btn-group {
             display: flex;
             justify-content: center;
             gap: 20px;
-            /* Important: Keep relative so buttons start side-by-side */
-            position: relative; 
-            height: 50px; /* Reserve space */
+            margin-top: 20px;
         }
 
         button {
@@ -94,7 +91,9 @@
             cursor: pointer;
             font-weight: bold;
             transition: transform 0.2s;
-            z-index: 101; /* Ensure buttons are clickable */
+            z-index: 101; 
+            /* Ensure buttons don't shrink */
+            white-space: nowrap; 
         }
 
         #yesBtn {
@@ -106,15 +105,7 @@
         #noBtn {
             background-color: #f1f1f1;
             color: #555;
-            position: absolute; /* Allows movement */
-            /* Initial position logic handled in CSS/JS */
-            right: 0;
-        }
-
-        /* Align Yes button to the left in the container */
-        #yesBtn {
-            position: absolute;
-            left: 0;
+            /* No absolute positioning initially! */
         }
 
         /* --- 6. Animations --- */
@@ -124,7 +115,6 @@
             z-index: 1;
         }
 
-        /* Floating UP */
         .up {
             animation: floatUp 6s linear forwards;
             bottom: -50px;
@@ -136,7 +126,6 @@
             100% { transform: translateY(-110vh) scale(1.2) rotate(20deg); opacity: 0; }
         }
 
-        /* Falling DOWN */
         .down {
             animation: fallDown 3s linear forwards;
             top: -50px;
@@ -193,31 +182,31 @@
         const audio = document.getElementById('music');
         let intervalId;
 
-        // --- 1. Button Logic (Run Away) ---
+        // --- 1. Button Run Away Logic ---
         function moveBtn(e) {
-            // Prevent default touch behavior (zooming/scrolling)
             if(e) e.preventDefault();
 
-            // Calculate safe area (window size - button size)
-            // We use 'fixed' positioning to let it go anywhere on screen
+            // Set Position Fixed ONLY when moved
+            noBtn.style.position = 'fixed';
+            
+            // Calculate random position
             const maxWidth = window.innerWidth - noBtn.offsetWidth - 20;
             const maxHeight = window.innerHeight - noBtn.offsetHeight - 20;
 
             const randomX = Math.random() * maxWidth;
             const randomY = Math.random() * maxHeight;
 
-            noBtn.style.position = 'fixed';
-            noBtn.style.left = Math.max(10, randomX) + 'px'; // Keep at least 10px from edge
+            // Apply new position
+            noBtn.style.left = Math.max(10, randomX) + 'px'; 
             noBtn.style.top = Math.max(10, randomY) + 'px';
             
-            // Try playing audio on first interaction
+            // Play Audio
             if(audio.paused) audio.play().catch(err => {});
         }
 
-        // Add events for both Desktop (mouseover) and Mobile (touchstart)
+        // Add events
         noBtn.addEventListener('mouseover', moveBtn);
         noBtn.addEventListener('touchstart', moveBtn);
-        noBtn.addEventListener('click', moveBtn); // Fallback
 
         // --- 2. Yes Button Logic ---
         yesBtn.addEventListener('click', () => {
@@ -252,12 +241,10 @@
             setTimeout(() => el.remove(), 6000);
         }
 
-        // Start Upward Hearts
         function startFloatingHearts() {
             intervalId = setInterval(() => createHeart('up'), 400);
         }
 
-        // Start Downward Hearts
         function startFallingLove() {
             clearInterval(intervalId);
             document.querySelectorAll('.up').forEach(el => el.remove());
@@ -267,7 +254,7 @@
         // Initialize
         startFloatingHearts();
         
-        // Global unlock for audio
+        // Unlock Audio
         document.body.addEventListener('click', () => {
             if(audio.paused) audio.play().catch(e => {});
         }, { once: true });
